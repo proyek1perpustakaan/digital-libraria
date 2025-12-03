@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:digital_libraria/models/buku.dart';
+import 'package:digital_libraria/models/reservasi.dart';
+import 'package:digital_libraria/providers/reservasi_provider.dart';
 
 class DetailBukuPage extends StatelessWidget {
   final Buku buku;
-
   const DetailBukuPage({super.key, required this.buku});
 
   @override
@@ -21,8 +23,6 @@ class DetailBukuPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            /// Cover buku
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -104,15 +104,27 @@ class DetailBukuPage extends StatelessWidget {
             "Apakah Anda yakin ingin melakukan reservasi untuk buku \"${buku.judul}\"?"),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context), // batal
+            onPressed: () => Navigator.pop(context), 
             child: const Text("Tidak"),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context); 
+            onPressed: () async {
+              Navigator.pop(context);
+
+              final provider =
+                  Provider.of<ReservasiProvider>(context, listen: false);
+
+              final reservasi = Reservasi(
+                kode: buku.kode,
+                judul: buku.judul,
+                tanggal: DateTime.now().toIso8601String(),
+              );
+              await provider.tambahReservasi(reservasi);
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Reservasi berhasil!")),
               );
+              Navigator.pushNamed(context, '/notifikasi');
             },
             child: const Text("Ya"),
           ),

@@ -4,41 +4,48 @@ import 'text_styles.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(
+    brightness: Brightness.light,
+    fontFamily: 'Poppins',
+
+    colorScheme: const ColorScheme.light(
       primary: Palette.secondaryGreen,
       secondary: Palette.white,
+      background: Colors.white,
+      surface: Colors.white,
+      onBackground: Colors.black,
+      onPrimary: Colors.white,
     ),
-    fontFamily: 'Poppins',
-    textTheme: TextTheme(
-      headlineLarge: TextStyles.headlineLarge,
-      headlineMedium: TextStyles.headlineMedium,
-      bodyLarge: TextStyles.bodyLarge,
-      bodyMedium: TextStyles.bodyMedium,
-    ),
-    buttonTheme: const ButtonThemeData(
-      buttonColor: Color(0xFFDDF0D5),
-      textTheme: ButtonTextTheme.primary,
-    ),
+
     scaffoldBackgroundColor: Colors.white,
+
+    textTheme: TextTheme(
+      headlineLarge: TextStyles.headlineLarge.copyWith(color: Colors.black),
+      headlineMedium: TextStyles.headlineMedium.copyWith(color: Colors.black),
+      bodyLarge: TextStyles.bodyLarge.copyWith(color: Colors.black87),
+      bodyMedium: TextStyles.bodyMedium.copyWith(color: Colors.black87),
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    colorScheme: ColorScheme.dark(
-      primary: Palette.secondaryGreen,
-      secondary: Colors.black,
-    ),
     fontFamily: 'Poppins',
+
+    colorScheme: const ColorScheme.dark(
+      primary: Palette.secondaryGreen,
+      secondary: Color(0xFF1C1C1E), // Card / container gelap
+      background: Color(0xFF000000), // Background utama
+      surface: Color(0xFF1C1C1E),
+      onBackground: Colors.white,
+      onPrimary: Colors.black,
+    ),
+
+    scaffoldBackgroundColor: const Color(0xFF000000),
+
     textTheme: TextTheme(
       headlineLarge: TextStyles.headlineLarge.copyWith(color: Colors.white),
       headlineMedium: TextStyles.headlineMedium.copyWith(color: Colors.white),
-      bodyLarge: TextStyles.bodyLarge.copyWith(color: Colors.white70),
-      bodyMedium: TextStyles.bodyMedium.copyWith(color: Colors.white60),
+      bodyLarge: TextStyles.bodyLarge.copyWith(color: Colors.white),
+      bodyMedium: TextStyles.bodyMedium.copyWith(color: Colors.white70),
     ),
-    buttonTheme: const ButtonThemeData(
-      buttonColor: Colors.teal,
-      textTheme: ButtonTextTheme.primary,
-    ),
-    scaffoldBackgroundColor: Colors.black,
   );
 }

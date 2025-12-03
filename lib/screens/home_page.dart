@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -217,6 +216,7 @@ class _HomePageState extends State<HomePage> {
             "Jam Operasional",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
+
           const SizedBox(height: 10),
 
           RichText(
@@ -248,11 +248,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-
           const SizedBox(height: 25),
           const Divider(color: Colors.black54),
           const SizedBox(height: 20),
-
           const Text(
             "Kontak Kami",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -287,6 +285,15 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         selectedItemColor: const Color(0xFF6BBE72),
         unselectedItemColor: Colors.black45,
+
+        currentIndex: 0, 
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.pushNamed(context, '/notifikasi');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/setting');
+          }
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifikasi"),

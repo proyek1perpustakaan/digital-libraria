@@ -1,10 +1,27 @@
-import 'package:digital_libraria/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'screens/home_page.dart';
-import 'screens/search_page.dart';
+import 'package:provider/provider.dart';
+import 'package:digital_libraria/providers/reservasi_provider.dart';
+import 'package:digital_libraria/providers/theme.provider.dart';
+import 'package:digital_libraria/screens/setting_page.dart';
+import 'package:digital_libraria/screens/splash_screen.dart';
+import 'package:digital_libraria/screens/home_page.dart';
+import 'package:digital_libraria/screens/search_page.dart';
+import 'package:digital_libraria/screens/notifikasi_page.dart';
+import 'package:digital_libraria/themes/app_theme.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final reservasiProvider = ReservasiProvider();
+  await reservasiProvider.loadReservasi();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => reservasiProvider),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,20 +29,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
-      title: 'Digital Libraria',
       debugShowCheckedModeBanner: false,
+      title: 'Digital Libraria',
+      themeMode: themeProvider.themeMode,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => const SplashScreen(),
         '/home': (context) => const HomePage(),
+        '/notifikasi': (context) => const NotifikasiPage(),
+        '/setting': (context) => const SettingPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/search') {
-          final String query = settings.arguments as String;
+          final query = settings.arguments as String;
           return MaterialPageRoute(
-            builder: (context) => SearchPage(query: query),
-          );
+              builder: (context) => SearchPage(query: query));
         }
         return null;
       },

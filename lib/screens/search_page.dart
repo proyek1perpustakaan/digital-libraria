@@ -25,7 +25,6 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _cariBuku() async {
     setState(() => isLoading = true);
-
     try {
       hasilPencarian =
           await BukuService().searchBuku(searchController.text);
@@ -34,7 +33,6 @@ class _SearchPageState extends State<SearchPage> {
       hasilPencarian = [];
       print("Error: $e");
     }
-
     setState(() => isLoading = false);
   }
 
@@ -53,7 +51,6 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -98,7 +95,6 @@ class _SearchPageState extends State<SearchPage> {
                               const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             final buku = hasilPencarian[index];
-
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(

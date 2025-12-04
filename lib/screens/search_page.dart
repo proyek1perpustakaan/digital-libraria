@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:digital_libraria/models/buku.dart';
 import 'package:digital_libraria/services/buku_service.dart';
 import 'package:digital_libraria/screens/detail_page.dart';
+import 'package:provider/provider.dart';
+import 'package:digital_libraria/providers/theme.provider.dart';
 
 class SearchPage extends StatefulWidget {
   final String query;
@@ -26,9 +28,7 @@ class _SearchPageState extends State<SearchPage> {
   Future<void> _cariBuku() async {
     setState(() => isLoading = true);
     try {
-      hasilPencarian =
-          await BukuService().searchBuku(searchController.text);
-
+      hasilPencarian = await BukuService().searchBuku(searchController.text);
     } catch (e) {
       hasilPencarian = [];
       print("Error: $e");
@@ -38,37 +38,60 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final bool isDark = themeProvider.isDarkMode;
+
     return Scaffold(
-      backgroundColor: Color(0xFFDDF0D5),
+      backgroundColor:
+          isDark ? const Color(0xFF1F2A1F) : const Color(0xFFDDF0D5),
+
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xFFDDF0D5),
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor:
+            isDark ? const Color(0xFF1F2A1F) : const Color(0xFFDDF0D5),
+        iconTheme: IconThemeData(
+          color: isDark ? Colors.white : Colors.black,
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Image.asset('assets/image/logo.png', height: 40),
+            Image.asset(
+              'assets/image/logo.png',
+              height: 40,
+              color: isDark ? Colors.white : null, // logo tetap terlihat
+            ),
           ],
         ),
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           children: [
+            // SEARCH BOX
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: isDark ? const Color(0xFF2C3A2C) : Colors.white,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TextField(
                 controller: searchController,
                 textAlignVertical: TextAlignVertical.center,
-                decoration: const InputDecoration(
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+                decoration: InputDecoration(
                   hintText: "Cari Buku",
+                  hintStyle: TextStyle(
+                    color: isDark ? Colors.white60 : Colors.black54,
+                  ),
                   border: InputBorder.none,
-                  suffixIcon: Icon(Icons.search),
-                  contentPadding: EdgeInsets.symmetric(vertical: 15),
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: isDark ? Colors.white70 : Colors.black54,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 15),
                 ),
                 onSubmitted: (_) => _cariBuku(),
               ),
@@ -80,12 +103,12 @@ class _SearchPageState extends State<SearchPage> {
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : hasilPencarian.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
                             "Buku tidak ditemukan",
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.black,
+                              color: isDark ? Colors.white70 : Colors.black,
                             ),
                           ),
                         )
@@ -95,28 +118,34 @@ class _SearchPageState extends State<SearchPage> {
                               const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             final buku = hasilPencarian[index];
+
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => DetailBukuPage(buku: buku),
+                                    builder: (_) =>
+                                        DetailBukuPage(buku: buku),
                                   ),
                                 );
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: isDark
+                                      ? const Color(0xFF2C3A2C)
+                                      : Colors.white,
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color:
-                                          Colors.black12.withOpacity(0.05),
-                                      blurRadius: 6,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
+                                  boxShadow: isDark
+                                      ? [] // no shadow in dark mode
+                                      : [
+                                          BoxShadow(
+                                            color: Colors.black12
+                                                .withOpacity(0.05),
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
                                 ),
                                 child: Row(
                                   children: [
@@ -127,20 +156,31 @@ class _SearchPageState extends State<SearchPage> {
                                         width: 60,
                                         height: 90,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
                                           return Container(
                                             width: 60,
                                             height: 90,
                                             decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              borderRadius: BorderRadius.circular(8),
+                                              color: isDark
+                                                  ? Colors.white10
+                                                  : Colors.grey.shade300,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
-                                            child: const Icon(Icons.book, color: Colors.black54),
+                                            child: Icon(
+                                              Icons.book,
+                                              color: isDark
+                                                  ? Colors.white54
+                                                  : Colors.black54,
+                                            ),
                                           );
                                         },
                                       ),
                                     ),
                                     const SizedBox(width: 12),
+
+                                    // TEXT BUKU
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -148,17 +188,22 @@ class _SearchPageState extends State<SearchPage> {
                                         children: [
                                           Text(
                                             buku.judul,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
                                           ),
                                           const SizedBox(height: 6),
                                           Text(
                                             buku.penulis,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 13,
-                                              color: Colors.grey,
+                                              color: isDark
+                                                  ? Colors.white70
+                                                  : Colors.grey,
                                             ),
                                           ),
                                         ],

@@ -11,8 +11,13 @@ import 'package:digital_libraria/themes/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   final reservasiProvider = ReservasiProvider();
   await reservasiProvider.loadReservasi();
+
+  final themeProvider = ThemeProvider();
+  await themeProvider.init();
+
   runApp(
     MultiProvider(
       providers: [
@@ -30,12 +35,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Digital Libraria',
       themeMode: themeProvider.themeMode,
+
+      // Theme
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+
+      // Routing
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
@@ -43,11 +53,13 @@ class MyApp extends StatelessWidget {
         '/notifikasi': (context) => const NotifikasiPage(),
         '/setting': (context) => const SettingPage(),
       },
+
       onGenerateRoute: (settings) {
         if (settings.name == '/search') {
           final query = settings.arguments as String;
           return MaterialPageRoute(
-              builder: (context) => SearchPage(query: query));
+            builder: (context) => SearchPage(query: query),
+          );
         }
         return null;
       },

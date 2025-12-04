@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/reservasi.dart';
+import '../services/reservasi_service.dart';
 
 class ReservasiProvider extends ChangeNotifier {
-  List<Reservasi> _reservasiList = [];
+  final ReservasiService service = ReservasiService();
 
+  List<Reservasi> _reservasiList = [];
   List<Reservasi> get reservasiList => _reservasiList;
 
   ReservasiProvider() {
-    loadReservasi();   
+    loadReservasi();
   }
 
   Future<void> loadReservasi() async {
@@ -17,7 +19,8 @@ class ReservasiProvider extends ChangeNotifier {
   }
 
   Future<void> tambahReservasi(Reservasi r) async {
-    _reservasiList.add(r);
+    final dataServer = await service.tambahReservasi(r);
+    _reservasiList.add(dataServer);
     await _saveToPrefs();
     notifyListeners();
   }
@@ -44,5 +47,4 @@ class ReservasiProvider extends ChangeNotifier {
     await _saveToPrefs();
     notifyListeners();
   }
-
 }

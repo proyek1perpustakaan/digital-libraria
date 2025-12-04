@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/buku.dart';
 import '../services/buku_service.dart';
+import '../themes/palette.dart';
 import 'search_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,43 +30,58 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:
+          isDark ? Palette.backgroundDark : Palette.backgroundLight,
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: 50),
+            padding: const EdgeInsets.only(bottom: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _headerGradient(size),
+                _headerGradient(
+                  context,
+                  isDark
+                      ? Palette.greenGradientDark
+                      : Palette.greenGradientLight,
+                ),
                 const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: _buildAbout(size),
+                  child: _buildAbout(context),
                 ),
                 const SizedBox(height: 30),
-                _infoSection(),
+                _infoSection(
+                  context,
+                  isDark ? Palette.greenDark : Palette.greenLight,
+                ),
               ],
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: _bottomNav(),
+            child: _bottomNav(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _headerGradient(Size size) {
+  Widget _headerGradient(BuildContext context, Color adaptiveGradientGreen) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.of(context).size;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFFFFFFFF), Color(0xFFDDF0D5)],
+          colors: [
+            isDark ? Palette.backgroundDark : Palette.backgroundLight,
+            adaptiveGradientGreen
+          ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -73,13 +89,14 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(size),
+          _buildHeader(context),
           const SizedBox(height: 30),
           Text(
             "Reservasi Buku Online",
             style: TextStyle(
               fontSize: size.width * 0.040,
-              color: Colors.black54,
+              color: (isDark ? Palette.textDark : Palette.textLight)
+                  .withOpacity(0.7),
             ),
           ),
           const SizedBox(height: 8),
@@ -89,21 +106,28 @@ class _HomePageState extends State<HomePage> {
               fontSize: size.width * 0.090,
               height: 1.2,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDark ? Palette.textDark : Palette.textLight,
             ),
           ),
           const SizedBox(height: 25),
-          _buildSearchBar(),
+          _buildSearchBar(context),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(Size size) {
+  Widget _buildHeader(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.of(context).size;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Image.asset("assets/image/logo.png", height: 35),
+        Image.asset(
+          'assets/image/logo.png',
+          height: 35,
+          color: isDark ? Colors.white : null,
+        ),
         Row(
           children: [
             Column(
@@ -114,20 +138,22 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: size.width * 0.030,
                     fontWeight: FontWeight.bold,
+                    color: isDark ? Palette.textDark : Palette.textLight,
                   ),
                 ),
                 Text(
                   "Politeknik Negeri Indramayu",
                   style: TextStyle(
                     fontSize: size.width * 0.030,
-                    color: Colors.black87,
+                    color: (isDark ? Palette.textDark : Palette.textLight)
+                        .withOpacity(0.7),
                   ),
                 ),
               ],
             ),
             const SizedBox(width: 10),
             const CircleAvatar(
-              radius:20,
+              radius: 20,
               backgroundImage: AssetImage("assets/image/profil.png"),
             ),
           ],
@@ -136,21 +162,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? Palette.cardDark : Palette.cardLight,
         borderRadius: BorderRadius.circular(30),
       ),
       child: TextField(
         controller: _searchController,
-        textAlignVertical: TextAlignVertical.center, 
-        decoration: const InputDecoration(
+        style: TextStyle(color: isDark ? Palette.textDark : Palette.textLight),
+        decoration: InputDecoration(
           hintText: "Cari Buku",
+          hintStyle: TextStyle(
+            color:
+                (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.4),
+          ),
           border: InputBorder.none,
-          suffixIcon: Icon(Icons.search),
-          contentPadding: EdgeInsets.symmetric(vertical: 15),
+          suffixIcon: Icon(Icons.search,
+              color: isDark ? Palette.textDark : Palette.textLight),
+          contentPadding: const EdgeInsets.symmetric(vertical: 15),
         ),
         onSubmitted: (query) {
           if (query.isNotEmpty) {
@@ -164,7 +197,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAbout(Size size) {
+  Widget _buildAbout(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.of(context).size;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -187,15 +223,21 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontSize: size.width * 0.060,
                   fontWeight: FontWeight.bold,
+                  color: isDark ? Palette.textDark : Palette.textLight,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 "Digilib merupakan singkatan dari Digital Libraria, "
                 "sebuah website yang dapat melakukan reservasi buku "
                 "secara online. Oleh karena itu, aplikasi ini dapat "
                 "mempermudah pemustaka yang ingin meminjam buku.",
-                style: TextStyle(fontSize: 14, height: 1.45),
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 1.45,
+                  color: (isDark ? Palette.textDark : Palette.textLight)
+                      .withOpacity(0.9),
+                ),
               ),
             ],
           ),
@@ -204,19 +246,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _infoSection() {
+  Widget _infoSection(BuildContext context, Color adaptiveGreen) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      color: const Color(0xFFDFEBD3),
+      color: adaptiveGreen,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             "Jam Operasional",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Palette.textDark : Palette.textLight,
+            ),
           ),
-
           const SizedBox(height: 10),
 
           RichText(
@@ -224,11 +271,15 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextSpan(
                   text: "Senin–Jumat",
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Palette.textDark : Palette.textLight,
+                  ),
                 ),
                 TextSpan(
                   text: " : 08.00 – 15.00 WIB",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: isDark ? Palette.textDark : Palette.textLight),
                 ),
               ],
             ),
@@ -239,67 +290,93 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextSpan(
                   text: "Cuti Bersama & Libur Nasional ",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: isDark ? Palette.textDark : Palette.textLight),
                 ),
                 TextSpan(
                   text: "Tutup",
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: isDark ? Palette.textDark : Palette.textLight,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
           ),
+
           const SizedBox(height: 25),
-          const Divider(color: Colors.black54),
-          const SizedBox(height: 20),
-          const Text(
-            "Kontak Kami",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          Divider(
+            color:
+                (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.5),
           ),
+          const SizedBox(height: 20),
+
+          Text(
+            "Kontak Kami",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Palette.textDark : Palette.textLight,
+            ),
+          ),
+
           const SizedBox(height: 10),
 
-          const Text("No. Telepon", 
-            style: TextStyle(fontWeight: FontWeight.bold)
-          ),
-          const Text("+62 831-2314-5678"),
+          Text("No. Telepon",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              )),
+          Text("+62 831-2314-5678",
+              style:
+                  TextStyle(color: isDark ? Palette.textDark : Palette.textLight)),
           const SizedBox(height: 12),
 
-          const Text("Email",
-            style: TextStyle(fontWeight: FontWeight.bold)
-          ),
-          const Text("proyek1perpustakaan@gmail.com"),
+          Text("Email",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              )),
+          Text("proyek1perpustakaan@gmail.com",
+              style:
+                  TextStyle(color: isDark ? Palette.textDark : Palette.textLight)),
           const SizedBox(height: 12),
 
-          const Text("Alamat",
-            style: TextStyle(fontWeight: FontWeight.bold)
-          ),
-          const Text("Jalan Raya Lohbener Lama No. 08 Lohbener"),
+          Text("Alamat",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              )),
+          Text("Jalan Raya Lohbener Lama No. 08 Lohbener",
+              style:
+                  TextStyle(color: isDark ? Palette.textDark : Palette.textLight)),
         ],
       ),
     );
   }
 
-  Widget _bottomNav() {
-    return Container(
-      color: Colors.white,
-      child: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: const Color(0xFF6BBE72),
-        unselectedItemColor: Colors.black45,
-
-        currentIndex: 0, 
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.pushNamed(context, '/notifikasi');
-          } else if (index == 2) {
-            Navigator.pushNamed(context, '/setting');
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifikasi"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Pengaturan"),
-        ],
-      ),
+  Widget _bottomNav(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return BottomNavigationBar(
+      backgroundColor:
+          isDark ? Palette.backgroundDark : Palette.backgroundLight,
+      selectedItemColor: Palette.primaryGreen,
+      unselectedItemColor:
+          (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.5),
+      currentIndex: 0,
+      onTap: (index) {
+        if (index == 1) {
+          Navigator.pushNamed(context, '/notifikasi');
+        } else if (index == 2) {
+          Navigator.pushNamed(context, '/setting');
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
+        BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifikasi"),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Pengaturan"),
+      ],
     );
   }
+
 }

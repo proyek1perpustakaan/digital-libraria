@@ -2,30 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/reservasi_provider.dart';
 import '../models/reservasi.dart';
+import '../themes/palette.dart';
+import 'package:digital_libraria/providers/theme.provider.dart';
 
 class NotifikasiPage extends StatelessWidget {
   const NotifikasiPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final bool isDark = themeProvider.isDarkMode;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFDDF0D5),
-      bottomNavigationBar: _bottomNav(context),
+      backgroundColor: isDark
+          ? const Color(0xFF1F2A1F)  // dark green
+          : const Color(0xFFDDF0D5), // light green
+      bottomNavigationBar: _bottomNav(context, isDark),
       appBar: AppBar(
         toolbarHeight: 80,
-        title: const Text("Daftar Reservasi"),
+        title: Text(
+          "Daftar Reservasi",
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Color(0xFFDDF0D5),
-        automaticallyImplyLeading: false, 
+        backgroundColor: isDark
+            ? const Color(0xFF1F2A1F)
+            : const Color(0xFFDDF0D5),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(
+          color: isDark ? Colors.white : Colors.black,
+        ),
       ),
       body: Consumer<ReservasiProvider>(
         builder: (context, provider, _) {
           final List<Reservasi> reservasi = provider.reservasiList;
+
           if (reservasi.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 "Belum ada reservasi",
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: isDark ? Colors.white70 : Colors.black54,
+                ),
               ),
             );
           }
@@ -35,6 +57,7 @@ class NotifikasiPage extends StatelessWidget {
             itemCount: reservasi.length,
             itemBuilder: (context, index) {
               final item = reservasi[index];
+              final tgl = DateTime.parse(item.tanggal);
 
               return Dismissible(
                 key: ValueKey(item.kode),
@@ -45,7 +68,7 @@ class NotifikasiPage extends StatelessWidget {
                   color: Colors.red,
                   child: const Icon(Icons.delete, color: Colors.white, size: 28),
                 ),
-                onDismissed: (direction) {
+                onDismissed: (_) {
                   provider.hapusReservasi(item.kode);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Reservasi dihapus")),
@@ -57,23 +80,46 @@ class NotifikasiPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   elevation: 2,
+                  color:
+                      isDark ? const Color(0xFF2C3A2C) : Colors.white,
                   child: ListTile(
-                    leading: const Icon(Icons.check_circle,
-                        color: Colors.green, size: 35),
-                    title: const Text(
+                    leading: Icon(
+                      Icons.check_circle,
+                      color:
+                          isDark ? Colors.greenAccent : Colors.green,
+                      size: 35,
+                    ),
+                    title: Text(
                       "Reservasi Berhasil",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Judul: ${item.judul}"),
-                        Text("Kode Buku: ${item.kode}"),
                         Text(
-                          "Tanggal: "
-                          "${DateTime.parse(item.tanggal).day}-"
-                          "${DateTime.parse(item.tanggal).month}-"
-                          "${DateTime.parse(item.tanggal).year}",
+                          "Judul: ${item.judul}",
+                          style: TextStyle(
+                            color:
+                                isDark ? Colors.white70 : Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          "Kode Buku: ${item.kode}",
+                          style: TextStyle(
+                            color:
+                                isDark ? Colors.white70 : Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          "Tanggal: ${tgl.day}-${tgl.month}-${tgl.year}",
+                          style: TextStyle(
+                            color:
+                                isDark ? Colors.white70 : Colors.black87,
+                          ),
                         ),
                       ],
                     ),
@@ -87,18 +133,17 @@ class NotifikasiPage extends StatelessWidget {
     );
   }
 
-  Widget _bottomNav(BuildContext context) {
+  Widget _bottomNav(BuildContext context, bool isDark) {
     return BottomNavigationBar(
-      backgroundColor: Colors.white,
-      selectedItemColor: const Color(0xFF6BBE72),
-      unselectedItemColor: Colors.black45,
-
-      currentIndex: 1, 
+      backgroundColor:
+          isDark ? Palette.backgroundDark : Palette.backgroundLight,
+      selectedItemColor: Palette.primaryGreen,
+      unselectedItemColor:
+          (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.5),
+      currentIndex: 1,
       onTap: (index) {
         if (index == 0) {
           Navigator.pushNamed(context, '/home');
-        } else if (index == 1) {
-          // tetap
         } else if (index == 2) {
           Navigator.pushNamed(context, '/setting');
         }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:digital_libraria/models/buku.dart';
 import 'package:digital_libraria/models/reservasi.dart';
 import 'package:digital_libraria/providers/reservasi_provider.dart';
+import 'package:digital_libraria/themes/palette.dart';
 
 class DetailBukuPage extends StatelessWidget {
   final Buku buku;
@@ -10,14 +11,24 @@ class DetailBukuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:
+          isDark ? Palette.greenDark : Colors.white,
       appBar: AppBar(
-        title: Text(buku.judul),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        title: Text(
+          buku.judul,
+          style: TextStyle(
+            color: isDark ? Palette.textDark : Palette.textLight,
+          ),
+        ),
+        backgroundColor:
+            isDark ? Palette.greenDark : Colors.white,
+        foregroundColor: isDark ? Palette.textDark : Palette.textLight,
         elevation: 0,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -43,49 +54,87 @@ class DetailBukuPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            Text("Kode Buku: ${buku.kode}",
-                style: const TextStyle(fontSize: 14, color: Colors.grey)),
+            Text(
+              "Kode Buku: ${buku.kode}",
+              style: TextStyle(
+                fontSize: 14,
+                color: isDark ? Colors.white70 : Colors.grey,
+              ),
+            ),
             const SizedBox(height: 8),
 
-            Text(buku.judul,
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              buku.judul,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              ),
+            ),
             const SizedBox(height: 8),
 
-            Text("Penulis: ${buku.penulis}",
-                style: const TextStyle(fontSize: 16)),
+            Text(
+              "Penulis: ${buku.penulis}",
+              style: TextStyle(
+                fontSize: 16,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              ),
+            ),
             const SizedBox(height: 4),
 
-            Text("Penerbit: ${buku.penerbit}",
-                style: const TextStyle(fontSize: 16)),
+            Text(
+              "Penerbit: ${buku.penerbit}",
+              style: TextStyle(
+                fontSize: 16,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              ),
+            ),
+
             const SizedBox(height: 20),
 
-            const Text("Sinopsis",
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              "Sinopsis",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              ),
+            ),
             const SizedBox(height: 8),
 
             Text(
               buku.sinopsis,
-              style: const TextStyle(fontSize: 15, height: 1.4),
+              style: TextStyle(
+                fontSize: 15,
+                height: 1.4,
+                color: isDark ? Palette.textDark : Palette.textLight,
+              ),
             ),
+
             const SizedBox(height: 30),
-            
+
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 30, vertical: 18),
-                  backgroundColor: Color(0xFFDDF0D5),
+                    horizontal: 30,
+                    vertical: 18,
+                  ),
+                  backgroundColor: isDark
+                      ? Palette.greenGradientDark
+                      : Palette.greenGradientLight,
+                  foregroundColor:
+                      isDark ? Palette.textDark : Colors.black,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
                 onPressed: () {
                   _tampilkanKonfirmasi(context);
                 },
                 child: const Text(
                   "Reservasi Buku",
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
@@ -96,16 +145,34 @@ class DetailBukuPage extends StatelessWidget {
   }
 
   void _tampilkanKonfirmasi(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Konfirmasi Reservasi"),
+        backgroundColor:
+            isDark ? Palette.cardDark : Palette.cardLight,
+        title: Text(
+          "Konfirmasi Reservasi",
+          style: TextStyle(
+            color: isDark ? Palette.textDark : Palette.textLight,
+          ),
+        ),
         content: Text(
-            "Apakah Anda yakin ingin melakukan reservasi untuk buku \"${buku.judul}\"?"),
+          "Apakah Anda yakin ingin melakukan reservasi untuk buku \"${buku.judul}\"?",
+          style: TextStyle(
+            color: isDark ? Palette.textDark : Palette.textLight,
+          ),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context), 
-            child: const Text("Tidak"),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Tidak",
+              style: TextStyle(
+                color: isDark ? Palette.textDark : Colors.black,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -126,6 +193,12 @@ class DetailBukuPage extends StatelessWidget {
               );
               Navigator.pushNamed(context, '/notifikasi');
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  isDark ? Palette.greenGradientDark : Palette.greenGradientLight,
+              foregroundColor:
+                  isDark ? Palette.textDark : Colors.black,
+            ),
             child: const Text("Ya"),
           ),
         ],

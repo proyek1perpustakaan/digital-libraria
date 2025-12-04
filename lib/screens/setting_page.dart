@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:digital_libraria/providers/theme.provider.dart';
+import '../themes/palette.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -8,34 +9,50 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final bool isDark = themeProvider.isDarkMode;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFDDF0D5),
+      backgroundColor: isDark
+          ? const Color(0xFF1F2A1F) // DARK GREEN
+          : const Color(0xFFDDF0D5), // LIGHT GREEN
       appBar: AppBar(
         toolbarHeight: 80,
         title: const Text("Pengaturan"),
         centerTitle: true,
-        backgroundColor: const Color(0xFFDDF0D5),
+        backgroundColor: isDark
+            ? const Color(0xFF1F2A1F)
+            : const Color(0xFFDDF0D5),
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      bottomNavigationBar: _bottomNav(context),
+      bottomNavigationBar: _bottomNav(context, isDark),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
           Card(
             elevation: 2,
+            color: isDark ? const Color(0xFF2C3A2C) : Colors.white,
             child: SwitchListTile(
-              title: const Text("Mode Gelap"),
+              title: Text(
+                "Mode Gelap",
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+              ),
               subtitle: Text(
-                themeProvider.isDarkMode
-                    ? "Tema gelap aktif"
-                    : "Tema terang aktif",
+                isDark ? "Tema gelap aktif" : "Tema terang aktif",
+                style: TextStyle(
+                  color: isDark ? Colors.white70 : Colors.black54,
+                ),
               ),
               value: themeProvider.isDarkMode,
               onChanged: (value) {
                 themeProvider.toggleTheme(value);
               },
-              secondary: const Icon(Icons.dark_mode),
+              secondary: Icon(
+                Icons.dark_mode,
+                color: isDark ? Colors.white : Colors.black,
+              ),
             ),
           ),
         ],
@@ -43,12 +60,13 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  Widget _bottomNav(BuildContext context) {
+  Widget _bottomNav(BuildContext context, bool isDark) {
     return BottomNavigationBar(
-      backgroundColor: Colors.white,
-      selectedItemColor: const Color(0xFF6BBE72),
-      unselectedItemColor: Colors.black45,
-      
+      backgroundColor:
+          isDark ? Palette.backgroundDark : Palette.backgroundLight,
+      selectedItemColor: Palette.primaryGreen,
+      unselectedItemColor:
+          (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.5),
       currentIndex: 2,
       onTap: (index) {
         if (index == 0) {

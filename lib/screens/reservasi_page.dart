@@ -15,7 +15,7 @@ class NotifikasiPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark
-          ? const Color(0xFF1F2A1F)  // dark green
+          ? const Color(0xFF1F2A1F) 
           : const Color(0xFFDDF0D5), // light green
       bottomNavigationBar: _bottomNav(context, isDark),
       appBar: AppBar(
@@ -38,6 +38,7 @@ class NotifikasiPage extends StatelessWidget {
       ),
       body: Consumer<ReservasiProvider>(
         builder: (context, provider, _) {
+
           final List<Reservasi> reservasi = provider.reservasiList;
 
           if (reservasi.isEmpty) {
@@ -101,14 +102,14 @@ class NotifikasiPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Judul: ${item.judul}",
+                          "Kode Buku: ${item.kode}",
                           style: TextStyle(
                             color:
                                 isDark ? Colors.white70 : Colors.black87,
                           ),
                         ),
                         Text(
-                          "Kode Buku: ${item.kode}",
+                          "Judul: ${item.judul}",
                           style: TextStyle(
                             color:
                                 isDark ? Colors.white70 : Colors.black87,

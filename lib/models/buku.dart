@@ -1,5 +1,5 @@
 class Buku {
-  final String kode;
+  final String kode; // ISBN dipakai sebagai kode buku
   final String judul;
   final String penulis;
   final String penerbit;
@@ -31,7 +31,7 @@ class Buku {
     final kodeBuku = isbn13 ?? isbn10 ?? json['id']?.toString() ?? '-';
 
     return Buku(
-      kode: json['id']?.toString() ?? '-',
+      kode: kodeBuku, // gunakan ISBN di sini
       judul: volume['title'] ?? '-',
       penulis: (volume['authors'] != null)
           ? (volume['authors'] as List).join(', ')

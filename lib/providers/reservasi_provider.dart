@@ -21,6 +21,7 @@ class ReservasiProvider extends ChangeNotifier {
       await _saveToPrefs();
     } catch (e) {
       await _loadFromPrefs();
+      print("LOAD LOCAL: $e");
     }
     notifyListeners();
   }
@@ -38,10 +39,14 @@ class ReservasiProvider extends ChangeNotifier {
   }
 
   Future<void> hapusReservasi(String kode) async {
-    await service.hapusReservasi(kode);
-    _reservasiList.removeWhere((e) => e.kode == kode);
-    await _saveToPrefs();
-    notifyListeners();
+    try {
+      await service.hapusReservasi(kode);
+      _reservasiList.removeWhere((e) => e.kode == kode);
+      await _saveToPrefs();
+      notifyListeners();
+    } catch (e) {
+      print("ERROR DELETE: $e");
+    }
   }
 
   Future<void> _saveToPrefs() async {

@@ -7,7 +7,7 @@ class ReservasiService {
   Future<List<Reservasi>> getReservasi() async {
     final response = await supabase
         .from('reservasi')
-        .select();
+        .select('kode, judul, tanggal');
 
     return (response as List)
         .map((e) => Reservasi.fromJson(e))
@@ -25,7 +25,6 @@ class ReservasiService {
       if (response == null) {
         throw Exception("Insert gagal: Supabase tidak mengembalikan data.");
       }
-
       return Reservasi.fromJson(response);
     } catch (e) {
       print("SUPABASE ERROR: $e");

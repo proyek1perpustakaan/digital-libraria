@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:digital_libraria/providers/reservasi_provider.dart';
 import 'package:digital_libraria/providers/theme.provider.dart';
 import 'package:digital_libraria/screens/home_page.dart';
-import 'package:digital_libraria/screens/notifikasi_page.dart';
+import 'package:digital_libraria/screens/reservasi_page.dart';
 import 'package:digital_libraria/screens/search_page.dart';
 import 'package:digital_libraria/screens/setting_page.dart';
 import 'package:digital_libraria/screens/splash_screen.dart';

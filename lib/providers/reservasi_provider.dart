@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/reservasi.dart';
 import '../services/reservasi_service.dart';
@@ -15,12 +15,31 @@ class ReservasiProvider extends ChangeNotifier {
   }
 
   Future<void> loadReservasi() async {
-    await _loadFromPrefs();
+    try {
+      final dataRemote = await service.getReservasi();
+      _reservasiList = dataRemote;
+      await _saveToPrefs();
+    } catch (e) {
+      await _loadFromPrefs();
+    }
+    notifyListeners();
   }
 
   Future<void> tambahReservasi(Reservasi r) async {
-    final dataServer = await service.tambahReservasi(r);
-    _reservasiList.add(dataServer);
+    try {
+      final created = await service.tambahReservasi(r);
+      _reservasiList.add(created);
+      await _saveToPrefs();
+      notifyListeners();
+    } catch (e) {
+      print("ERROR PROVIDER: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> hapusReservasi(String kode) async {
+    await service.hapusReservasi(kode);
+    _reservasiList.removeWhere((e) => e.kode == kode);
     await _saveToPrefs();
     notifyListeners();
   }
@@ -39,12 +58,5 @@ class ReservasiProvider extends ChangeNotifier {
       _reservasiList =
           data.map((e) => Reservasi.fromJson(jsonDecode(e))).toList();
     }
-    notifyListeners();
-  }
-
-  Future<void> hapusReservasi(String id) async {
-    _reservasiList.removeWhere((e) => e.kode == id);
-    await _saveToPrefs();
-    notifyListeners();
   }
 }

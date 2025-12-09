@@ -10,11 +10,10 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final bool isDark = themeProvider.isDarkMode;
-
     return Scaffold(
       backgroundColor: isDark
-          ? const Color(0xFF1F2A1F) // DARK GREEN
-          : const Color(0xFFDDF0D5), // LIGHT GREEN
+          ? const Color(0xFF1F2A1F) 
+          : const Color(0xFFDDF0D5), 
       appBar: AppBar(
         toolbarHeight: 80,
         title: const Text("Pengaturan"),

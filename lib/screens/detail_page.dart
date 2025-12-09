@@ -144,65 +144,67 @@ class DetailBukuPage extends StatelessWidget {
     );
   }
 
-  void _tampilkanKonfirmasi(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+void _tampilkanKonfirmasi(BuildContext context) {
+  final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor:
-            isDark ? Palette.cardDark : Palette.cardLight,
-        title: Text(
-          "Konfirmasi Reservasi",
-          style: TextStyle(
-            color: isDark ? Palette.textDark : Palette.textLight,
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: isDark ? Palette.cardDark : Palette.cardLight,
+      title: Text(
+        "Konfirmasi Reservasi",
+        style: TextStyle(color: isDark ? Palette.textDark : Palette.textLight),
+      ),
+      content: Text(
+        "Apakah Anda yakin ingin melakukan reservasi untuk buku \"${buku.judul}\"?",
+        style: TextStyle(color: isDark ? Palette.textDark : Palette.textLight),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            "Tidak",
+            style: TextStyle(color: isDark ? Palette.textDark : Colors.black),
           ),
         ),
-        content: Text(
-          "Apakah Anda yakin ingin melakukan reservasi untuk buku \"${buku.judul}\"?",
-          style: TextStyle(
-            color: isDark ? Palette.textDark : Palette.textLight,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "Tidak",
-              style: TextStyle(
-                color: isDark ? Palette.textDark : Colors.black,
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.pop(context);
 
-              final provider =
-                  Provider.of<ReservasiProvider>(context, listen: false);
+            final provider =
+                Provider.of<ReservasiProvider>(context, listen: false);
 
-              final reservasi = Reservasi(
-                kode: buku.kode,
-                judul: buku.judul,
-                tanggal: DateTime.now().toIso8601String(),
-              );
+            final reservasi = Reservasi(
+              kode: buku.kode,
+              judul: buku.judul,
+              tanggal: DateTime.now().toIso8601String(),
+            );
+
+            try {
               await provider.tambahReservasi(reservasi);
 
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Reservasi berhasil!")),
               );
+
               Navigator.pushNamed(context, '/notifikasi');
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  isDark ? Palette.greenGradientDark : Palette.greenGradientLight,
-              foregroundColor:
-                  isDark ? Palette.textDark : Colors.black,
-            ),
-            child: const Text("Ya"),
+
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Gagal reservasi: $e")),
+              );
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor:
+                isDark ? Palette.greenGradientDark : Palette.greenGradientLight,
+            foregroundColor: isDark ? Palette.textDark : Colors.black,
           ),
-        ],
-      ),
-    );
-  }
+          child: const Text("Ya"),
+        ),
+      ],
+    ),
+  );
+}
+
 }

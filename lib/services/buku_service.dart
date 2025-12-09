@@ -9,10 +9,8 @@ class BukuService {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-
       if (data["items"] == null) return [];
       final List items = data["items"];
-
       return items.map<Buku>((item) {
         final json = item;
         return Buku.fromJson(json);

@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 class Palette {
   static const Color primaryGreen = Color(0xFF6BBE72);
 
-  // Light Mode
   static const Color greenLight = Color(0xFFDFEBD3);
   static const Color greenGradientLight = Color(0xFFDDF0D5);
 
-  // Dark Mode
   static const Color greenDark = Color(0xFF1F2A1F);
   static const Color greenGradientDark = Color(0xFF2C3A2C);
 

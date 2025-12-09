@@ -18,25 +18,26 @@ class Buku {
   factory Buku.fromJson(Map<String, dynamic> json) {
     final volume = json['volumeInfo'] ?? {};
 
+    String? isbn10;
+    String? isbn13;
+
+    if (volume['industryIdentifiers'] != null) {
+      for (var id in volume['industryIdentifiers']) {
+        if (id['type'] == 'ISBN_10') isbn10 = id['identifier'];
+        if (id['type'] == 'ISBN_13') isbn13 = id['identifier'];
+      }
+    }
+    
+    final kodeBuku = isbn13 ?? isbn10 ?? json['id']?.toString() ?? '-';
+
     return Buku(
-      // Google Books ID (fallback dari properti paling aman)
       kode: json['id']?.toString() ?? '-',
-
-      // Judul
       judul: volume['title'] ?? '-',
-
-      // Authors → dijadikan string
       penulis: (volume['authors'] != null)
           ? (volume['authors'] as List).join(', ')
           : 'Tidak diketahui',
-
-      // Penerbit
       penerbit: volume['publisher'] ?? 'Tidak diketahui',
-
-      // Sinopsis (description)
       sinopsis: volume['description'] ?? 'Tidak ada sinopsis.',
-
-      // Cover image (thumbnail)
       cover: volume['imageLinks'] != null
           ? (volume['imageLinks']['thumbnail'] ?? '')
           : '',

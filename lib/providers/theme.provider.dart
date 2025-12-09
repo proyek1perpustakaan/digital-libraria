@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   bool _isDarkMode = false;
-  bool _isLoaded = false; // penting
+  bool _isLoaded = false;
 
   bool get isDarkMode => _isDarkMode;
 

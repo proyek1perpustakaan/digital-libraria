@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/reservasi_provider.dart';
-import '../models/reservasi.dart';
-import '../themes/palette.dart';
-import 'package:digital_libraria/providers/theme.provider.dart';
+import '../../viewmodels/reservasi_viewmodel.dart';
+import '../../models/reservasi.dart';
+import '../../themes/palette.dart';
+import 'package:digital_libraria/viewmodels/theme.provider.dart';
 
 class NotifikasiPage extends StatelessWidget {
   const NotifikasiPage({super.key});

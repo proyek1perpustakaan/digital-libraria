@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:digital_libraria/models/buku.dart';
 import 'package:digital_libraria/models/reservasi.dart';
-import 'package:digital_libraria/providers/reservasi_provider.dart';
+import 'package:digital_libraria/viewmodels/reservasi_viewmodel.dart';
 import 'package:digital_libraria/themes/palette.dart';
 
 class DetailBukuPage extends StatelessWidget {

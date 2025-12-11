@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:digital_libraria/providers/reservasi_provider.dart';
-import 'package:digital_libraria/providers/theme.provider.dart';
-import 'package:digital_libraria/screens/home_page.dart';
-import 'package:digital_libraria/screens/reservasi_page.dart';
-import 'package:digital_libraria/screens/search_page.dart';
-import 'package:digital_libraria/screens/setting_page.dart';
-import 'package:digital_libraria/screens/splash_screen.dart';
+import 'package:digital_libraria/viewmodels/reservasi_viewmodel.dart';
+import 'package:digital_libraria/viewmodels/theme.provider.dart';
+import 'package:digital_libraria/views/pages/home_page.dart';
+import 'package:digital_libraria/views/pages/reservasi_page.dart';
+import 'package:digital_libraria/views/pages/search_page.dart';
+import 'package:digital_libraria/views/pages/setting_page.dart';
+import 'package:digital_libraria/views/pages/splash_screen.dart';
 import 'package:digital_libraria/themes/app_theme.dart';
 
 void main() async {

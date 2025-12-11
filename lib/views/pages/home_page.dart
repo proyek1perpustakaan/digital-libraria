@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/buku.dart';
-import '../services/buku_service.dart';
-import '../themes/palette.dart';
+import '../../models/buku.dart';
+import '../../services/buku_service.dart';
+import '../../themes/palette.dart';
 import 'search_page.dart';
 
 class HomePage extends StatefulWidget {

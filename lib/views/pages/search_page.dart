@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:digital_libraria/models/buku.dart';
 import 'package:digital_libraria/services/buku_service.dart';
-import 'package:digital_libraria/screens/detail_page.dart';
+import 'package:digital_libraria/views/pages/detail_page.dart';
 import 'package:provider/provider.dart';
-import 'package:digital_libraria/providers/theme.provider.dart';
+import 'package:digital_libraria/viewmodels/theme.provider.dart';
 
 class SearchPage extends StatefulWidget {
   final String query;
@@ -58,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
             Image.asset(
               'assets/image/logo.png',
               height: 40,
-              color: isDark ? Colors.white : null, // logo tetap terlihat
+              color: isDark ? Colors.white : null,
             ),
           ],
         ),
@@ -137,7 +137,7 @@ class _SearchPageState extends State<SearchPage> {
                                       : Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                   boxShadow: isDark
-                                      ? [] // no shadow in dark mode
+                                      ? [] 
                                       : [
                                           BoxShadow(
                                             color: Colors.black12
@@ -180,7 +180,6 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                     const SizedBox(width: 12),
 
-                                    // TEXT BUKU
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:

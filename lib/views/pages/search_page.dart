@@ -3,7 +3,7 @@ import 'package:digital_libraria/models/buku.dart';
 import 'package:digital_libraria/services/buku_service.dart';
 import 'package:digital_libraria/views/pages/detail_page.dart';
 import 'package:provider/provider.dart';
-import 'package:digital_libraria/viewmodels/theme.provider.dart';
+import 'package:digital_libraria/viewmodels/theme_viewmodel.dart';
 
 class SearchPage extends StatefulWidget {
   final String query;

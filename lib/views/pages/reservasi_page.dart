@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../viewmodels/reservasi_viewmodel.dart';
 import '../../models/reservasi.dart';
 import '../../themes/palette.dart';
-import 'package:digital_libraria/viewmodels/theme.provider.dart';
+import 'package:digital_libraria/viewmodels/theme_viewmodel.dart';
 
 class NotifikasiPage extends StatelessWidget {
   const NotifikasiPage({super.key});
@@ -16,7 +16,7 @@ class NotifikasiPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark
           ? const Color(0xFF1F2A1F) 
-          : const Color(0xFFDDF0D5), // light green
+          : const Color(0xFFDDF0D5), 
       bottomNavigationBar: _bottomNav(context, isDark),
       appBar: AppBar(
         toolbarHeight: 80,

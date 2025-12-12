@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:digital_libraria/viewmodels/reservasi_viewmodel.dart';
-import 'package:digital_libraria/viewmodels/theme.provider.dart';
+import 'package:digital_libraria/viewmodels/theme_viewmodel.dart';
 import 'package:digital_libraria/views/pages/home_page.dart';
 import 'package:digital_libraria/views/pages/reservasi_page.dart';
 import 'package:digital_libraria/views/pages/search_page.dart';

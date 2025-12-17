@@ -1,16 +1,19 @@
 # digital_libraria
+Aplikasi perpustaaan digital berbasis Android yang dikembangkan menggunakan Flutter.
 
-A new Flutter project.
+## Instruksi Build APK
 
-## Getting Started
+### Build Command
+flutter build apk --release
 
-This project is a starting point for a Flutter application.
+### Environment
+- Flutter : 3.35.2
+- Android SDK : API 36
+- Java JDK : 24 (build berhasil menggunakan versi ini)
+- Sistem Operasi : Windows 11 Pro
 
-A few resources to get you started if this is your first Flutter project:
+### Output
+build/app/outputs/flutter-apk/app-release.apk
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Flavors
+Tidak menggunakan build flavors

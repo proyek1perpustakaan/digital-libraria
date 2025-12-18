@@ -1,4 +1,4 @@
-# digital_libraria
+# Digital Libraria
 Aplikasi perpustaaan digital berbasis Android yang dikembangkan menggunakan Flutter, serta aplikasi ini memiliki fitur pencarian dan reservasi.
 
 ## Environment
@@ -9,9 +9,9 @@ Aplikasi perpustaaan digital berbasis Android yang dikembangkan menggunakan Flut
 - Sistem Operasi : Windows 11 Pro
   
 ## Setup Proyek
-git clone https://github.com/proyek1perpustakaan/digital-libraria.git
-cd digital_libraria
-flutter pub get
+- git clone https://github.com/proyek1perpustakaan/digital-libraria.git
+- cd digital_libraria
+- flutter pub get
 
 ## Cara menjalankan aplikasi (run)
 flutter run

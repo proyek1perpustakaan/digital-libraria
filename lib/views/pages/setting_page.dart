@@ -71,12 +71,12 @@ class SettingPage extends StatelessWidget {
         if (index == 0) {
           Navigator.pushNamed(context, '/home');
         } else if (index == 1) {
-          Navigator.pushNamed(context, '/notifikasi');
+          Navigator.pushNamed(context, '/reservasi');
         }
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifikasi"),
+        BottomNavigationBarItem(icon: Icon(Icons.history), label: "Reservasi"),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Pengaturan"),
       ],
     );

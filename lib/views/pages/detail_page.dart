@@ -187,7 +187,7 @@ void _tampilkanKonfirmasi(BuildContext context) {
                 const SnackBar(content: Text("Reservasi berhasil!")),
               );
 
-              Navigator.pushNamed(context, '/notifikasi');
+              Navigator.pushNamed(context, '/reservasi');
 
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(

@@ -1,3 +1,4 @@
+import 'package:digital_libraria/views/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import '../../models/buku.dart';
 import '../../services/buku_service.dart';
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
+  
   Widget _buildHeader(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
@@ -128,35 +129,50 @@ class _HomePageState extends State<HomePage> {
           height: 35,
           color: isDark ? Colors.white : null,
         ),
-        Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Dhiva Franciscia",
-                  style: TextStyle(
-                    fontSize: size.width * 0.030,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Palette.textDark : Palette.textLight,
+
+        InkWell(
+          borderRadius: BorderRadius.circular(30),
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+              ),
+              builder: (_) => const ProfileBottomSheet()
+            );
+          },
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "Dhiva Franciscia",
+                    style: TextStyle(
+                      fontSize: size.width * 0.030,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Palette.textDark : Palette.textLight,
+                    ),
                   ),
-                ),
-                Text(
-                  "Politeknik Negeri Indramayu",
-                  style: TextStyle(
-                    fontSize: size.width * 0.030,
-                    color: (isDark ? Palette.textDark : Palette.textLight)
-                        .withOpacity(0.7),
+                  Text(
+                    "Politeknik Negeri Indramayu",
+                    style: TextStyle(
+                      fontSize: size.width * 0.030,
+                      color: (isDark ? Palette.textDark : Palette.textLight)
+                          .withOpacity(0.7),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 10),
-            const CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage("assets/image/profil.png"),
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(width: 10),
+              const CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage("assets/image/profil.png"),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -366,14 +382,14 @@ class _HomePageState extends State<HomePage> {
       currentIndex: 0,
       onTap: (index) {
         if (index == 1) {
-          Navigator.pushNamed(context, '/notifikasi');
+          Navigator.pushNamed(context, '/reservasi');
         } else if (index == 2) {
           Navigator.pushNamed(context, '/setting');
         }
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifikasi"),
+        BottomNavigationBarItem(icon: Icon(Icons.history), label: "Reservasi"),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Pengaturan"),
       ],
     );

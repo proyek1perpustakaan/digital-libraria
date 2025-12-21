@@ -32,41 +32,40 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor:
           isDark ? Palette.backgroundDark : Palette.backgroundLight,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _headerGradient(
-                  context,
-                  isDark
-                      ? Palette.greenGradientDark
-                      : Palette.greenGradientLight,
-                ),
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: _buildAbout(context),
-                ),
-                const SizedBox(height: 30),
-                _infoSection(
-                  context,
-                  isDark ? Palette.greenDark : Palette.greenLight,
-                ),
-              ],
-            ),
+
+      body: SingleChildScrollView(
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _headerGradient(
+                context,
+                isDark
+                    ? Palette.greenGradientDark
+                    : Palette.greenGradientLight,
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildAbout(context),
+              ),
+              const SizedBox(height: 30),
+              _infoSection(
+                context,
+                isDark ? Palette.greenDark : Palette.greenLight,
+              ),
+            ],
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _bottomNav(context),
-          ),
-        ],
+        ),
       ),
+
+      // PENTING: pindahkan ke sini
+      bottomNavigationBar: _bottomNav(context),
     );
   }
 
@@ -245,9 +244,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
               Text(
                 "Digilib merupakan singkatan dari Digital Libraria, "
-                "sebuah website yang dapat melakukan reservasi buku "
+                "sebuah aplikasi yang dapat melakukan reservasi buku "
                 "secara online. Oleh karena itu, aplikasi ini dapat "
                 "mempermudah pemustaka yang ingin meminjam buku.",
+                textAlign: TextAlign.justify,
                 style: TextStyle(
                   fontSize: 14,
                   height: 1.45,
@@ -394,5 +394,4 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
 }

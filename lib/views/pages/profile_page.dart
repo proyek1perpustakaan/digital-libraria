@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import '../../models/profil.dart';
 import '../../themes/palette.dart';
 
-class ProfileBottomSheet extends StatelessWidget {
-  const ProfileBottomSheet({super.key});
+class ProfilBottomSheet extends StatelessWidget {
+  final Profil profile;
+  final String authEmail; // tambahkan
+
+  const ProfilBottomSheet({
+    super.key,
+    required this.profile,
+    required this.authEmail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,65 +20,83 @@ class ProfileBottomSheet extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, bottom: 30),
       decoration: BoxDecoration(
         color: isDark ? Palette.backgroundDark : Palette.backgroundLight,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(30),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
       ),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            _headerProfile(context),
+            _headerProfile(isDark),
             const SizedBox(height: 20),
-            _profileInfo(context),
+            _profileInfo(isDark),
           ],
         ),
       ),
     );
   }
 
-  Widget _headerProfile(BuildContext context) {
+  Widget _headerProfile(bool isDark) {
     return Column(
-      children: const [
-        CircleAvatar(
+      children: [
+        const CircleAvatar(
           radius: 40,
           backgroundImage: AssetImage("assets/image/profil.png"),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Text(
-          "Dhiva Franciscia",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          profile.fullName,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: isDark ? Palette.textDark : Palette.textLight,
+          ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
-          "Politeknik Negeri Indramayu",
-          style: TextStyle(color: Colors.grey),
+          profile.institution,
+          style: TextStyle(
+            color: (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.7),
+          ),
         ),
       ],
     );
   }
 
-  Widget _profileInfo(BuildContext context) {
+  Widget _profileInfo(bool isDark) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          _infoRow("NIM", "2405051"),
-          _infoRow("Program Studi", "D4 Rekayasa Perangkat Lunak"),
-          _infoRow("Email", "dhiva@gmail.com"),
-          _infoRow("No. Telepon", "+62 812-3456-7890"),
+          _infoRow("NIM", profile.nim, isDark),
+          _infoRow("Program Studi", profile.studyProgram, isDark),
+          _infoRow("Email", profile.email.isNotEmpty ? profile.email : authEmail, isDark),
+          _infoRow("No. Telepon", profile.phone, isDark),
         ],
       ),
     );
   }
 
-  Widget _infoRow(String label, String value) {
+  Widget _infoRow(String label, String value, bool isDark) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(value),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isDark ? Palette.textDark : Palette.textLight,
+            ),
+          ),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                color: isDark ? Palette.textDark : Palette.textLight,
+              ),
+            ),
+          ),
         ],
       ),
     );

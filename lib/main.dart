@@ -1,3 +1,6 @@
+import 'package:digital_libraria/viewmodels/auth_viewmodel.dart';
+import 'package:digital_libraria/views/pages/login_page.dart';
+import 'package:digital_libraria/views/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -28,6 +31,8 @@ class AppStarter extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()
+        ),
         ChangeNotifierProvider(create: (_) => ThemeProvider()..init()
         ),
         ChangeNotifierProvider(
@@ -55,6 +60,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
+        '/login': (_) => const LoginPage(),
+        '/register': (_) => const RegisterPage(),
         '/home': (context) => const HomePage(),
         '/reservasi': (context) => const NotifikasiPage(),
         '/setting': (context) => const SettingPage(),

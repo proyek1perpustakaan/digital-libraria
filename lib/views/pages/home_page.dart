@@ -1,9 +1,12 @@
-import 'package:digital_libraria/views/pages/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../../models/buku.dart';
+import '../../models/profil.dart';
 import '../../services/buku_service.dart';
 import '../../themes/palette.dart';
 import 'search_page.dart';
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,12 +22,43 @@ class _HomePageState extends State<HomePage> {
   List<Buku> _books = [];
   bool _isLoading = false;
 
+  Profil? _profile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final data = await Supabase.instance.client
+          .from('profiles')
+          .select()
+          .eq('id', user.id)
+          .single();
+
+      setState(() {
+        final profileMap = {
+          ...data,
+          'email': data['email'] ?? user.email ?? '-',
+        };
+        _profile = Profil.fromMap(profileMap);
+      });
+    } catch (e) {
+      debugPrint("Error loading profile: $e");
+    }
+  }
+
   Future<void> searchBuku(String query) async {
     setState(() => _isLoading = true);
     try {
       _books = await bukuService.searchBuku(query);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     setState(() => _isLoading = false);
   }
@@ -36,7 +70,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor:
           isDark ? Palette.backgroundDark : Palette.backgroundLight,
-
       body: SingleChildScrollView(
         child: SafeArea(
           bottom: false,
@@ -63,8 +96,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-
-      // PENTING: pindahkan ke sini
       bottomNavigationBar: _bottomNav(context),
     );
   }
@@ -115,7 +146,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  
+
   Widget _buildHeader(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
@@ -128,38 +159,47 @@ class _HomePageState extends State<HomePage> {
           height: 35,
           color: isDark ? Colors.white : null,
         ),
-
         InkWell(
           borderRadius: BorderRadius.circular(30),
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-              ),
-              builder: (_) => const ProfileBottomSheet()
-            );
-          },
+          onTap: _profile == null
+              ? null
+              : () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(30)),
+                    ),
+                    builder: (_) => ProfilBottomSheet(
+                      profile: _profile!,
+                      authEmail: Supabase.instance.client.auth.currentUser?.email ?? '-',
+                    ),
+                  );
+                },
           child: Row(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "Dhiva Franciscia",
+                    _profile?.fullName ?? "",
                     style: TextStyle(
                       fontSize: size.width * 0.030,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? Palette.textDark : Palette.textLight,
+                      color: isDark
+                          ? Palette.textDark
+                          : Palette.textLight,
                     ),
                   ),
                   Text(
-                    "Politeknik Negeri Indramayu",
+                    _profile?.institution ?? "",
                     style: TextStyle(
                       fontSize: size.width * 0.030,
-                      color: (isDark ? Palette.textDark : Palette.textLight)
+                      color: (isDark
+                              ? Palette.textDark
+                              : Palette.textLight)
                           .withOpacity(0.7),
                     ),
                   ),
@@ -188,23 +228,33 @@ class _HomePageState extends State<HomePage> {
       ),
       child: TextField(
         controller: _searchController,
-        style: TextStyle(color: isDark ? Palette.textDark : Palette.textLight),
+        style: TextStyle(
+          color: isDark ? Palette.textDark : Palette.textLight,
+        ),
         decoration: InputDecoration(
           hintText: "Cari Buku",
           hintStyle: TextStyle(
             color:
-                (isDark ? Palette.textDark : Palette.textLight).withOpacity(0.4),
+                (isDark ? Palette.textDark : Palette.textLight)
+                    .withOpacity(0.4),
           ),
           border: InputBorder.none,
-          suffixIcon: Icon(Icons.search,
-              color: isDark ? Palette.textDark : Palette.textLight),
-          contentPadding: const EdgeInsets.symmetric(vertical: 15),
+          suffixIcon: Icon(
+            Icons.search,
+            color: isDark
+                ? Palette.textDark
+                : Palette.textLight,
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15),
         ),
         onSubmitted: (query) {
           if (query.isNotEmpty) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => SearchPage(query: query)),
+              MaterialPageRoute(
+                builder: (_) => SearchPage(query: query),
+              ),
             );
           }
         },
@@ -238,7 +288,8 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontSize: size.width * 0.060,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Palette.textDark : Palette.textLight,
+                  color:
+                      isDark ? Palette.textDark : Palette.textLight,
                 ),
               ),
               const SizedBox(height: 10),
@@ -251,7 +302,9 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontSize: 14,
                   height: 1.45,
-                  color: (isDark ? Palette.textDark : Palette.textLight)
+                  color: (isDark
+                          ? Palette.textDark
+                          : Palette.textLight)
                       .withOpacity(0.9),
                 ),
               ),

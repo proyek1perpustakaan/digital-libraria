@@ -1,5 +1,5 @@
 # Digital Libraria
-Aplikasi perpustaaan digital berbasis Android yang dikembangkan menggunakan Flutter, serta aplikasi ini memiliki fitur pencarian dan reservasi.
+Aplikasi perpustaaan digital yang dikembangkan menggunakan Flutter, serta aplikasi ini memiliki fitur pencarian dan reservasi.
 
 ## Environment
 - Flutter : 3.35.2
